@@ -1,12 +1,14 @@
 #include <iostream>
 #include <iomanip>
-#include "GradedActivity.h"
 #include <string>
 #include <vector>
 #include <fstream>
 #include <cstdlib>
 #include <Windows.h>
 #include <ctime>
+#include <algorithm>
+
+#include "GradedActivity.h"
 
 using namespace std;
 
@@ -62,26 +64,16 @@ void makeStudent(vector<string> names, int num, vector<GradedActivity> &students
 }
 
 
+//sort
+bool compareScore(const GradedActivity &a, const GradedActivity& b)
+{
+    return (a.getScore() > b.getScore());
+}
 
 //descending selection sort of students by grade
-void sortScore(vector<GradedActivity> &student, int num){
-	
-	for (int j = 0; j < num - 1; ++j) {
-
-		int min = j;
-
-		for (int i = j+1; i < num; ++i) {
-
-			if (student.at(min).getScore() < student.at(i).getScore()) {
-				min = i;
-			}
-
-		}
-		if (min != j)
-			swap(student.at(j), student.at(min));
-
-	}
-
+void sortScore(vector<GradedActivity> &student)
+{
+    sort(student.begin(), student.end(), compareScore);
 }
 
 //formats and prints the students
@@ -100,26 +92,27 @@ void print(vector<GradedActivity> &student){
 		scores = s.getScore();
 		grade = s.getLetterGrade();
 		
-		cout << "\t\t" <<
-				place  << "\t"   << 
-				name   << "\t\t\t" << 
-				scores << "\t"   << 
-				grade  << endl;
+		cout << setw(3) <<
+                place  << "\t"   << setw(20) << 
+                name   << "\t"   << 
+                scores << "\t\t" <<
+                grade  << endl;
 
 		place++;
 	}
 }
 
 int main() { 
-	int num = 20;
+	
+	int num = 1'000;
 	vector<string> names = getNames(num); //giving all of our names
 	vector<GradedActivity> student = {}; //vector of students
 
 	makeStudent(names, num, student); //populates our vector of students
-	sortScore(student,num); //sorting student on grade
-		
-
+	sortScore(student); //sorting student on grade
+			
 	print(student);
-
+	cout << clock();
 	return 0;
+	
 }
