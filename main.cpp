@@ -13,35 +13,48 @@
 using namespace std;
 
 
-
+//this returns a vector of strings which
+//intake "num" of amount of names from a list of 1000 common names
+//and give the amount of names desired for amount of students
 vector<string> getNames(int num){
-	string str;
-	bool status;
-	int randn;
-	vector<string> name = {};
-	vector<string> bigNames = {};
-
+	vector<string> name;
+	vector<string> lsName;
+	string line;
+	int numLines, randnum;
+	srand(time(0));
 	ifstream filein("Names.txt");
+	
+	//getting the count of file + all lines
+	numLines = 0;
 
-    for (string line; getline(filein, line); )
-    {
-        bigNames.push_back(line);
-    }
+	while(getline(filein,line)) {
+		numLines++;
+		lsName.push_back(line);
+	}
 
-	srand(time(NULL));
+	//storing "num" amount of random names from ls of names 
 	for (int i = 0; i < num; i++){
-		randn = rand() % 1000 ;
-		name.push_back(bigNames.at(randn));
+		
+		randnum = rand() % numLines;
+		name.push_back(lsName[randnum]);
+
 	}
 	filein.close();
 	return name;
 
 }
 
-void makeStudent(vector<string> names, int num, vector<GradedActivity> &students){
-	double randn  = rand() % 100 + 1;
+//this makes "num" amount of students with random names, score
+//it stores all of the students in a student vector
+void makeStudent(vector<string> names, int num, vector<GradedActivity> &students){	
+	double randn;
 	string name = "";
+
+	//names the students with the 1 of the names and a random 
+	//double as a score
+	//stores student in vector of student
 	for(int i = 0; i < num; i++){
+		
 		randn = rand() % 100 + 1;
 		name = names.at(i);
 		students.push_back(GradedActivity(name, randn));		
@@ -52,8 +65,7 @@ void makeStudent(vector<string> names, int num, vector<GradedActivity> &students
 
 
 
-
-
+//descending selection sort of students by grade
 void sortScore(vector<GradedActivity> &student, int num){
 	for (int j = 0; j < num - 1; ++j) {
 
@@ -73,30 +85,18 @@ void sortScore(vector<GradedActivity> &student, int num){
 
 }
 
-
-int main() { 
-	double numericScore;  // To hold the numeric score
-	double percentage;    // To hold curve percentage
-    GradedActivity exam;  // Define a GradedActivity object.
-	double score;
-	int num = 10;
-	vector<string> names = getNames(num);
+//formats and prints the students
+void print(vector<GradedActivity> &student){
 	
-	vector<GradedActivity> student = {};
-	
-	
-	makeStudent(names, num, student);
-
-	sortScore(student,num);
-		
-
 	string name;
 	double scores;
 	char grade;
 	int place = 1;
+	
+	//s is student within the vector "student"
 	for (GradedActivity &s : student){
 		
-		name = s.getName().c_str();
+		name = s.getName();
 		scores = s.getScore();
 		grade = s.getLetterGrade();
 		
@@ -105,13 +105,20 @@ int main() {
 				scores << "" << setw(6) << 
 				grade << endl;
 
-
-
-
-
 		place++;
 	}
+}
 
+int main() { 
+	int num = 10;
+	vector<string> names = getNames(num); //giving all of our names
+	vector<GradedActivity> student = {}; //vector of students
+
+	makeStudent(names, num, student); //populates our vector of students
+	sortScore(student,num); //sorting student on grade
+		
+
+	print(student); //prints the vector
 
 	return 0;
 }
