@@ -8,8 +8,6 @@
 #include <Windows.h>
 #include <ctime>
 
-
-
 using namespace std;
 
 
@@ -67,6 +65,7 @@ void makeStudent(vector<string> names, int num, vector<GradedActivity> &students
 
 //descending selection sort of students by grade
 void sortScore(vector<GradedActivity> &student, int num){
+	
 	for (int j = 0; j < num - 1; ++j) {
 
 		int min = j;
@@ -93,24 +92,26 @@ void print(vector<GradedActivity> &student){
 	char grade;
 	int place = 1;
 	
-	//s is student within the vector "student"
+	//s is student withint
+	//\t
 	for (GradedActivity &s : student){
 		
 		name = s.getName();
 		scores = s.getScore();
 		grade = s.getLetterGrade();
 		
-		cout << place << setw(7) << "" << setw(6) << 
-				name << "" << setw(9) << 
-				scores << "" << setw(6) << 
-				grade << endl;
+		cout << "\t\t" <<
+				place  << "\t"   << 
+				name   << "\t\t\t" << 
+				scores << "\t"   << 
+				grade  << endl;
 
 		place++;
 	}
 }
 
 int main() { 
-	int num = 10;
+	int num = 20;
 	vector<string> names = getNames(num); //giving all of our names
 	vector<GradedActivity> student = {}; //vector of students
 
@@ -118,7 +119,7 @@ int main() {
 	sortScore(student,num); //sorting student on grade
 		
 
-	print(student); //prints the vector
+	print(student);
 
 	return 0;
 }

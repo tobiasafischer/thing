@@ -10,7 +10,6 @@ class GradedActivity {
         char letter;
         double score;   // To hold the numeric score
         string name;
-        static vector<GradedActivity*> objList; 
 
 
         void determineGrade() { 
@@ -64,9 +63,7 @@ class GradedActivity {
         // virtual char getLetterGrade() const { return letter;  }
         char getLetterGrade() const { return letter; }
 
-        static vector<GradedActivity*> getAllObjects(){
-            return objList;
-        }
+       
 
         
 };
