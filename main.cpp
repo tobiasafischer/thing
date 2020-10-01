@@ -69,6 +69,8 @@ double getAvg(){
 	int count=0;
 
 	for(int i = 0; i < 22; i++){
+
+		//make it so its higher % for students to be > 60%
 		if(i % 5 == 0)
 			randn = rand() % 100 + 1;
 		else 
