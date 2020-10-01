@@ -7,8 +7,9 @@
 #include <Windows.h>
 #include <ctime>
 #include <algorithm>
+#include <tgmath.h>
 
-#include "GradedActivity.h"
+#include "Student.h"
 
 using namespace std;
 
@@ -44,75 +45,108 @@ vector<string> getNames(int num){
 
 }
 
-//this makes "num" amount of students with random names, score
-//it stores all of the students in a student vector
-void makeStudent(vector<string> names, int num, vector<GradedActivity> &students){	
-	double randn;
-	string name = "";
+int determineGrade(double score) { 
+    int letter;
+	if (score > 89)
+        letter = 4;
+    else if (score > 79)
+        letter = 3;
+    else if (score > 69)
+        letter = 2;
+    else if (score > 59)
+        letter = 1;
+    else
+	    letter = 0;
+	return letter;
+}
 
-	//names the students with the 1 of the names and a random 
-	//double as a score
-	//stores student in vector of student
-	for(int i = 0; i < num; i++){
+double getAvg(){
+	//amt credits to graduate HS
+	//in real application of database on the inplementation we would be able to use double
+	//in this case lets assume they are rounded
+
+	double randn; double total = 0;
+	int count=0;
+
+	for(int i = 0; i < 22; i++){
+		if(i % 5 == 0)
+			randn = rand() % 100 + 1;
+		else 
+			randn = rand() % 100 + 60;
+		total += determineGrade(randn);
+
 		
-		randn = rand() % 100 + 1;
+		count++;
+	}
+	
+	return total/count;
+}
+
+
+void makeStudent(vector<Student> &lsOfStudent, vector<string> names){
+
+	string name;
+	double randn;
+	int num = names.size();
+	for(int i = 0; i < num; i++){
+		randn =  ceil(getAvg() * 100.0) / 100.0;
+
 		name = names.at(i);
-		students.push_back(GradedActivity(name, randn));		
+		lsOfStudent.push_back(Student(name, randn));		
 		
     }
-	
+
 }
+
+
 
 
 //sort
-bool compareScore(const GradedActivity &a, const GradedActivity& b)
+bool compareScore(const Student &a, const Student& b)
 {
-    return (a.getScore() > b.getScore());
+    return (a.getGPA() > b.getGPA());
 }
 
 //descending selection sort of students by grade
-void sortScore(vector<GradedActivity> &student)
+void sortScore(vector<Student> &lsOfStudent)
 {
-    sort(student.begin(), student.end(), compareScore);
+    sort(lsOfStudent.begin(), lsOfStudent.end(), compareScore);
 }
 
 //formats and prints the students
-void print(vector<GradedActivity> &student){
+void print(vector<Student> &lsOfStudent){
 	
 	string name;
-	double scores;
+	double scores, gpa;
 	char grade;
 	int place = 1;
 	
 	//s is student withint
 	//\t
-	for (GradedActivity &s : student){
+	for (Student &s : lsOfStudent){
 		
 		name = s.getName();
-		scores = s.getScore();
-		grade = s.getLetterGrade();
+		gpa = s.getGPA();
 		
 		cout << setw(3) <<
                 place  << "\t"   << setw(20) << 
                 name   << "\t"   << 
-                scores << "\t\t" <<
-                grade  << endl;
+                gpa << "\t\t" << endl;
 
 		place++;
 	}
 }
 
 int main() { 
-	
+
 	int num = 1'000;
 	vector<string> names = getNames(num); //giving all of our names
-	vector<GradedActivity> student = {}; //vector of students
+	vector<Student> lsOfStudent = {}; //vector of students
 
-	makeStudent(names, num, student); //populates our vector of students
-	sortScore(student); //sorting student on grade
+	makeStudent( lsOfStudent,names); //populates our vector of students
+	sortScore(lsOfStudent); //sorting student on grade
 			
-	print(student);
-	cout << clock();
+	print(lsOfStudent);
 	return 0;
 	
 }
