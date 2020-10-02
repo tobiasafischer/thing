@@ -102,8 +102,6 @@ void makeStudent(vector<Student> &lsOfStudent, vector<string> names){
 }
 
 
-
-
 //sort
 bool compareScore(const Student &a, const Student& b)
 {
@@ -139,7 +137,6 @@ void print(vector<Student> &lsOfStudent){
 		place++;
 	}
 }
-
 
 
 void top(vector<Student> &student){
@@ -256,10 +253,6 @@ int main() {
 	makeStudent( lsOfStudent,names); //populates our vector of students
 	sortScore(lsOfStudent); //sorting student on grade
 	
-
-
-
-
 
 	bool b = true;
 	while(b){
