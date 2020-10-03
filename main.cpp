@@ -212,20 +212,34 @@ void by_name(vector<Student> &student){
 	
 
 }
+
 void failing(vector<Student> &student){
 	bool pass = true;
+	int count = 0;
+	double gpa = 0;
 	for(int i = 0; i < student.size(); i++){
+		
 		if(student[i].getGPA() < 2.0 ){
+			gpa += student[i].getGPA();
+			count++;
 			pass = false;
 			cout << i+1 << "\t" <<student[i].getName() << "\t\t" <<  student[i].getGPA() << "\n";
 			}
 	}
 	if (pass)
 		cout << "There are no students failing." << endl;
+	else
+		cout << "The average failing grade is " <<  gpa/count <<".\n";		
 
 
 }
 
+int howManyStudents(){
+	int num;
+	cout << "How many students would you like to create: ";
+	cin >> num;
+	return num;
+}
 
 int check(string s){
 	if (s == "top")
@@ -245,7 +259,7 @@ int check(string s){
 
 int main() { 
 
-	int num = 2'000'000;
+	int num = howManyStudents();
 	vector<string> names = getNames(num); //giving all of our names
 	vector<Student> lsOfStudent = {}; //vector of students
 	cout << "\n\n Calculating " << num << " students...\n\n";
