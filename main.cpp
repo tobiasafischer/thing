@@ -1,3 +1,4 @@
+//Student Graduation Implementation Tobias Fischer
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -186,7 +187,6 @@ void average(vector<Student> &student){
 		count++;
 	}
 	cout << "The average GPA of " << student.size() << " students is: " << total/count << endl;
-
 }
 
 void by_name(vector<Student> &student){
