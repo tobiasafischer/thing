@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <map>
+
 #include <vector>
 #include <fstream>
 #include <cstdlib>
@@ -213,7 +215,7 @@ void by_name(vector<Student> &student){
 
 }
 
-void failing(vector<Student> &student){
+void at_risk(vector<Student> &student){
 	bool pass = true;
 	int count = 0;
 	double gpa = 0;
@@ -227,9 +229,9 @@ void failing(vector<Student> &student){
 			}
 	}
 	if (pass)
-		cout << "There are no students failing." << endl;
+		cout << "There are no students at_risk." << endl;
 	else
-		cout << "The average failing grade is " <<  gpa/count <<".\n";		
+		cout << "The average at_risk grade is " <<  gpa/count <<".\n";		
 
 
 }
@@ -241,27 +243,21 @@ int howManyStudents(){
 	return num;
 }
 
-int check(string s){
-	if (s == "top")
-		return 1;
-	else if(s == "bottom")
-		return 2;
-	else if(s == "average")
-		return 3;
-	else if(s == "by_name")
-		return 4;
-	else if(s == "failing")
-		return 5;
-	else if(s == "exit")
-		return 6;
-	return 0;
-}
 
 int main() { 
 
 	int num = howManyStudents();
 	vector<string> names = getNames(num); //giving all of our names
 	vector<Student> lsOfStudent = {}; //vector of students
+	
+	map<string,int> choice{
+		{"top", 1},
+		{"bottom", 2},
+		{"average", 3},
+		{"by_name", 4},
+		{"at_risk", 5},
+		{"exit", 6}
+	};
 	cout << "\n\n Calculating " << num << " students...\n\n";
 
 	makeStudent( lsOfStudent,names); //populates our vector of students
@@ -271,13 +267,12 @@ int main() {
 	bool b = true;
 	while(b){
 		string s;
-		cout << "\ntop \t bottom \t average \t by_name \t failing\n\n";
+		cout << "\ntop \t bottom \t average \t by_name \t at_risk\n\n";
 		cout << "What choice: ";
 		cin >> s;
 
-		int c = check(s);
-
-		switch(c){
+		
+		switch(choice[s]){
 			case 1:
 				top(lsOfStudent);
 				break;
@@ -291,7 +286,7 @@ int main() {
 				by_name(lsOfStudent);
 				break;
 			case 5:
-				failing(lsOfStudent);
+				at_risk(lsOfStudent);
 				break;
 			case 6:
 				b = false;
